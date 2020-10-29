@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using H5Serv.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,13 @@ namespace H5Serv
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MyDbContext>(x => x.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = H5serv"));
+
+            services.AddSession( opt =>
+            {
+                opt.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+            services.AddDataProtection();
             services.AddControllersWithViews();
         }
 
@@ -45,6 +54,7 @@ namespace H5Serv
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,0 +1,60 @@
+﻿@model H5Serv.Models.DB.TodoItem
+
+@{
+    ViewData["Title"] = "TodoItem";
+}
+
+<h1>TodoItem</h1>
+<p>@ViewBag.User.Username</p>
+
+<h4>TodoItem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="TodoItem">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Added" class="control-label"></label>
+                <input asp-for="Added" class="form-control" />
+                <span asp-validation-for="Added" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDone" /> @Html.DisplayNameFor(model => model.IsDone)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <section class="col-md-6">
+                @foreach (H5Serv.Models.DB.TodoItem todo in ViewBag.User.TodoItems)
+                {
+                    <div>
+                        <h2>@todo.Title</h2>
+                        <p>
+                            @todo.Description
+                        </p>
+                    </div>
+                }
+            </section>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
